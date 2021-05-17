@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Events</h1>
+    <h1>#{{ id }}</h1>
   </div>
 </template>
 
@@ -8,15 +8,20 @@
 export default {
   head() {
     return {
-      title: 'Event Listing',
+      title: `Event ${this.id}`,
       meta: [
         {
           hid: 'description',
           name: 'description',
-          content: 'Where you can find all the events in your neighborhood',
+          content: `What you need to know about ${this.id}`,
         },
       ],
     }
+  },
+  computed: {
+    id() {
+      return this.$route.params.id
+    },
   },
 }
 </script>

@@ -15,10 +15,11 @@ export const mutations = {
 }
 
 export const actions = {
-  fetchEvents({ commit }) {
-    return EventService.getEvents().then((response) => {
-      commit('SET_EVENTS', response.data)
-    })
+  fetchEvents({ commit, state }, refresh = false) {
+    if (refresh || !state.events.length)
+      return EventService.getEvents().then((response) => {
+        commit('SET_EVENTS', response.data)
+      })
   },
   fetchEvent({ commit }, id) {
     return EventService.getEvent(id).then((response) => {

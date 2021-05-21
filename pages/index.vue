@@ -13,6 +13,7 @@
 
 <script>
 import EventCard from '@/components/EventCard'
+import { mapState } from 'vuex'
 
 export default {
   head() {
@@ -27,23 +28,21 @@ export default {
       ],
     }
   },
-  asyncData({ $axios, error }) {
-    return $axios
-      .get('http://localhost:3500/events')
-      .then((response) => {
-        return {
-          events: response.data,
-        }
+  async fetch({ store, error }) {
+    try {
+      await store.dispatch('events/fetchEvents')
+    } catch (e) {
+      error({
+        statusCode: 503,
+        message: 'Unable to Fetch events at this time. Please try again.',
       })
-      .catch((e) => {
-        error({
-          statusCode: 503,
-          message: 'Unable to Fetch events at this time. Please try again.',
-        })
-      })
+    }
   },
   components: {
     EventCard,
   },
+  computed: mapState({
+    events: (state) => state.events.events,
+  }),
 }
 </script>
